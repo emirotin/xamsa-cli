@@ -1,13 +1,22 @@
 fs = require 'fs'
 async = require 'async'
+_ = require 'lodash'
+moment = require 'moment'
 blessed = require 'blessed'
 
 CONFIG_NAME = '.xamsa.json'
 cfg = null
 
+buttonColors =
+  '1': 'blue'
+  '2': 'yellow'
+  '3': 'green'
+  '4': 'red'
+
 drawInterface = ->
   screen = blessed.screen()
-  screen.key ['escape', 'q', 'C-c'], (ch, key) ->
+  program = screen.program
+  screen.key ['escape', 'C-c'], (ch, key) ->
     process.exit(0)
 
   box = blessed.box
@@ -16,20 +25,44 @@ drawInterface = ->
     width: '500'
     height: '500'
     tags: true
+    content: "Сброс: пробел, Выход: ESC\n-------------------------"
     style:
-      fg: 'green'
-      bg: '#eee'
+      fg: '#eee'
+      bg: 'black'
 
-  box.on 'click', (data) ->
-    box.
+  list = blessed.box
+    parent: box
+    bottom: 0
+    left: 0
+    width: '100%'
+    height: '90%'
+    tags: true
+    border: type: 'line'
+    style:
+      border: fg: 'red'
+
+  pressedButtons = {}
+  reset = ->
+    pressedButtons = {}
+    list.setContent ''
     screen.render()
 
-  box.key 'enter', (ch, key) ->
-    screen.render()
+  screen.on 'keypress', (ch) ->
+    if not ch
+      return
+    if ch == ' '
+      reset()
+    else if (button = _.findKey cfg, (v) -> v == ch.charCodeAt(0))
+      if pressedButtons[button]
+        return
+      pressedButtons[button] = true
+      color = buttonColors[button]
+      time = moment().format('HH:mm:ss.SSS')
+      list.pushLine("#{time} {#{color}-fg}{bold}Нажата кнопка ##{button}{/bold}{/#{color}-fg}")
+      screen.render()
 
   screen.append(box)
   box.focus()
-  box.setContent cfg[0]
   screen.render()
 
 readConfig = (done) ->
