@@ -1,0 +1,18 @@
+{
+  "name": "xamsa-cli",
+  "version": "0.0.0",
+  "description": "Xamsa CLI client for USB systems",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/emirotin/xamsa-cli.git"
+  },
+  "author": "Eugene Mirotin <emirotin@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/emirotin/xamsa-cli/issues"
+  }
+}
