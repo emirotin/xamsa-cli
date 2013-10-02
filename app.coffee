@@ -25,7 +25,7 @@ drawInterface = ->
     width: '500'
     height: '500'
     tags: true
-    content: "Сброс: пробел, Выход: ESC\n-------------------------"
+    content: "Reset: Space, Exit: ESC\n-----------------------"
     style:
       fg: '#eee'
       bg: 'black'
@@ -58,7 +58,7 @@ drawInterface = ->
       pressedButtons[button] = true
       color = buttonColors[button]
       time = moment().format('HH:mm:ss.SSS')
-      list.pushLine("#{time} {#{color}-fg}{bold}Нажата кнопка ##{button}{/bold}{/#{color}-fg}")
+      list.pushLine("#{time} {#{color}-fg}{bold}Pressed: ##{button}{/bold}{/#{color}-fg}")
       screen.render()
 
   screen.append(box)
@@ -76,7 +76,7 @@ readConfig = (done) ->
       cfg[i] = data[0]
       cb null
     stdin.on 'data', onKey
-    console.log "➜  Нажмите кнопку ##{i}: "
+    console.log ">  Press the button ##{i}: "
   finished = ->
     stdin.setRawMode(false)
     fs.writeFileSync configPath, JSON.stringify cfg
