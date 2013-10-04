@@ -95,6 +95,7 @@ box.focus()
 reset()
 
 readConfig = ->
+  cfg = {}
   cfgMode = true
   configButton = null
   configCb = null
