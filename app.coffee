@@ -35,8 +35,8 @@ box = blessed.box
   height: '500'
   tags: true
   content: """
-    Reset: Space, Config: Tab, Exit: ESC
-    ------------------------------------"""
+    Config: Tab, Exit: ESC
+    ----------------------"""
   style:
     fg: '#eee'
     bg: 'black'
@@ -68,7 +68,7 @@ screen.on 'keypress', (ch) ->
   if not ch
     return
 
-  if ch == ' '
+  if ch == cfg['reset']
     reset()
 
   else if ch == '\t'
@@ -104,7 +104,7 @@ readConfig = ->
   readKey = (i, cb) ->
     configCb = cb
     configButton = i
-    print ">  Press the button ##{i}: "
+    print ">  Press the button #{i}: "
 
   finished = ->
     fs.writeFileSync configPath, JSON.stringify cfg
@@ -114,7 +114,7 @@ readConfig = ->
     reset()
 
   print 'Running in config mode'
-  async.eachSeries [1..4], readKey, finished
+  async.eachSeries [1..4].concat("reset"), readKey, finished
 
 if not cfg
   readConfig()
